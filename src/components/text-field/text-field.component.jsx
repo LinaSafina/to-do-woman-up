@@ -1,7 +1,10 @@
+import Input from '../input/input.component';
+import TextArea from '../textarea/text-area.component';
+
 import './text-field.styles.less';
 
 const TextField = (props) => {
-  const { type, id, name, label } = props;
+  const { type, id, name, label, ...otherProps } = props;
 
   return (
     <div className='text-field'>
@@ -9,7 +12,11 @@ const TextField = (props) => {
       <label className='text-field__label' htmlFor={id}>
         {label}
       </label>
-      <input className='text-field__input' type={type} id={id} name={name} />
+      {type === 'textarea' ? (
+        <TextArea id={id} name={name} {...otherProps} />
+      ) : (
+        <Input type={type} id={id} name={name} {...otherProps} />
+      )}
     </div>
   );
 };
