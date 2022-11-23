@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Button from '../button/button.component';
 import TextField from '../text-field/text-field.component';
 
 import './new-to-do.styles.less';
-import { fetchData, sendItem } from '../../api/fetchData';
+import { fetchData, getData, sendItem } from '../../api/fetchData';
+import { TodosContext } from '../../context/todos.context';
 
 const defaultTextFields = {
   title: '',
@@ -16,16 +17,24 @@ const NewToDo = () => {
   const [newToDo, setNewToDo] = useState(defaultTextFields);
   const { title, description, date } = newToDo;
 
+  const { setTodos } = useContext(TodosContext);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
     setNewToDo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    fetchData(sendItem, { body: JSON.stringify({ title, description, date }) });
+    await fetchData(sendItem, {
+      body: JSON.stringify({ title, description, date }),
+    });
+
+    await fetchData(getData).then((data) => {
+      setTodos(data);
+    });
   };
 
   return (

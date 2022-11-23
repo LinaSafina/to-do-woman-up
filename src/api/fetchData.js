@@ -15,14 +15,14 @@ export const fetchData = async (callback, options, url = apiUrl) => {
 
   const data = await response.json();
 
-  callback(data);
+  return callback(data);
 };
 
-export const sendItem = async (data) => {
+export const sendItem = (data) => {
   console.log(data);
 };
 
-export const getData = async (data) => {
+export const getData = (data) => {
   const loadedData = [];
 
   for (let key in data) {
@@ -32,23 +32,11 @@ export const getData = async (data) => {
   return loadedData;
 };
 
-export const editItem = async (apiUrl, body) => {
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-
-  console.log(response);
-  console.log(body);
+export const editItem = (apiUrl, body) => {
+  // console.log(response);
+  // console.log(body);
 };
 
-export const deleteItem = async (apiUrl, body) => {
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-
-  console.log(response);
+export const deleteItem = (apiUrl, body) => {
+  // console.log(response);
 };

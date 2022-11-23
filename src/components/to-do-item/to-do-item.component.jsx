@@ -6,10 +6,10 @@ import { ReactComponent as ClipIcon } from '../../assets/clip.svg';
 import './to-do-item.styles.less';
 
 const ToDoItem = (props) => {
-  const { text, onClick } = props;
+  const { text, id, onClick } = props;
 
   return (
-    <li className='to-do-item' onClick={onClick}>
+    <li className='to-do-item' onClick={onClick} id={id}>
       <span className='to-do-item__text'>{text}</span>
       <div className='to-do-item__actions'>
         <DeleteIcon />
