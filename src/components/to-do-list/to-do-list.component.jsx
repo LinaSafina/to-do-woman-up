@@ -6,30 +6,44 @@ import Modal from '../modal/modal.component';
 import './to-do-list.styles.less';
 import { TodosContext } from '../../context/todos.context';
 
+const defaultChosenTodo = {
+  title: '',
+  description: '',
+  date: '',
+};
+
 const ToDoList = () => {
-  const [chosenToDo, setChosenToDo] = useState(null);
+  const [chosenToDo, setChosenToDo] = useState(defaultChosenTodo);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { todos } = useContext(TodosContext);
 
-  const handleModalOpen = (event) => {
-    setChosenToDo(event.target.innerText);
+  const handleModalOpen = (item) => {
+    setChosenToDo(item);
     setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setChosenToDo(null);
+    setChosenToDo(defaultChosenTodo);
   };
 
-  const todosList = todos.map(({ title, id }) => (
-    <ToDoItem key={id} text={title} id={id} onClick={handleModalOpen} />
-  ));
+  const todosList = todos.map((item) => {
+    const { title, id } = item;
+    return (
+      <ToDoItem
+        key={id}
+        text={title}
+        id={id}
+        onClick={handleModalOpen.bind(null, item)}
+      />
+    );
+  });
 
   return (
     <>
       <ul className='to-do-list'>{todosList}</ul>
       <Modal
-        data={{ title: 'title', description: 'description', date: 'date' }}
+        data={chosenToDo}
         isOpen={isModalOpen}
         onClose={handleModalClose}
       />
