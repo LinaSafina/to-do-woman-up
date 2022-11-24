@@ -9,12 +9,14 @@ import { TodosContext } from '../../context/todos.context';
 const defaultChosenTodo = {
   title: '',
   description: '',
-  date: '',
+  expiryDate: '',
 };
 
 const ToDoList = () => {
   const [chosenToDo, setChosenToDo] = useState(defaultChosenTodo);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
+
   const { todos } = useContext(TodosContext);
 
   const handleModalOpen = (item) => {
@@ -25,16 +27,20 @@ const ToDoList = () => {
   const handleModalClose = () => {
     setIsModalOpen(false);
     setChosenToDo(defaultChosenTodo);
+    setIsEdited(false);
   };
 
   const todosList = todos.map((item) => {
-    const { title, id } = item;
+    const { title, id, status } = item;
+
     return (
       <ToDoItem
         key={id}
         text={title}
         id={id}
-        onClick={handleModalOpen.bind(null, item)}
+        status={status}
+        handleModalOpen={handleModalOpen.bind(null, item)}
+        setIsEdited={setIsEdited}
       />
     );
   });
@@ -46,6 +52,8 @@ const ToDoList = () => {
         data={chosenToDo}
         isOpen={isModalOpen}
         onClose={handleModalClose}
+        isEdited={isEdited}
+        setIsEdited={setIsEdited}
       />
     </>
   );

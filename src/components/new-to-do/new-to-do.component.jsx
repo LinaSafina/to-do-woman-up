@@ -1,45 +1,61 @@
-import { useContext, useEffect, useState } from 'react';
-
-import Button from '../button/button.component';
-import TextField from '../text-field/text-field.component';
+import { useContext, useEffect, useRef, useState } from 'react';
+import * as DateJS from 'datejs';
 
 import './new-to-do.styles.less';
-import { fetchData, getData, sendItem } from '../../api/fetchData';
+import { sendItem, TO_DO_STATUS } from '../../api/api';
 import { TodosContext } from '../../context/todos.context';
+import ToDoForm from '../to-do-form/to-do-form.component';
 
-const defaultTextFields = {
+const defaultFormFields = {
   title: '',
   description: '',
-  date: '2022-11-23',
+  expiryDate: Date.today().toString('yyyy-M-d'),
 };
 
 const NewToDo = () => {
-  const [newToDo, setNewToDo] = useState(defaultTextFields);
-  const { title, description, date } = newToDo;
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const { title, description, expiryDate } = formFields;
+
+  const inputFileRef = useRef();
 
   const { setTodos } = useContext(TodosContext);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    setNewToDo((prev) => ({ ...prev, [name]: value }));
+    setFormFields((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    await fetchData(sendItem, {
-      body: JSON.stringify({ title, description, date }),
+    console.dir(inputFileRef.current);
+
+    const data = await sendItem({
+      title,
+      description,
+      expiryDate,
+      status: TO_DO_STATUS.IN_PROGRESS,
+      files: inputFileRef.current.files,
     });
 
-    await fetchData(getData).then((data) => {
-      setTodos(data);
-    });
+    setTodos(data);
+
+    setFormFields(defaultFormFields);
   };
 
   return (
     <div className='new-to-do'>
-      <form className='new-to-do__form' onSubmit={handleFormSubmit}>
+      <ToDoForm
+        heading='Что нужно сделать?'
+        formFields={formFields}
+        handleInputChange={handleInputChange}
+        handleFormSubmit={handleFormSubmit}
+        formName='new'
+        buttonText='Добавить'
+        ref={inputFileRef}
+      />
+      {/* <form className='new-to-do__form' onSubmit={handleFormSubmit}>
         <h2>Что нужно сделать?</h2>
         <TextField
           type='text'
@@ -68,7 +84,7 @@ const NewToDo = () => {
           max='2024-12-31'
         />
         <Button text='Добавить' />
-      </form>
+      </form> */}
     </div>
   );
 };

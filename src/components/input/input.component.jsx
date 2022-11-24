@@ -1,6 +1,8 @@
+import React from 'react';
+
 import './input.styles.less';
 
-const Input = (props) => {
+const Input = React.forwardRef((props, ref) => {
   const { type, id, name, ...otherProps } = props;
 
   return (
@@ -10,8 +12,9 @@ const Input = (props) => {
       id={id}
       name={name}
       {...otherProps}
+      ref={ref}
     />
   );
-};
+});
 
 export default Input;
