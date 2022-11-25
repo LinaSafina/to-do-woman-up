@@ -10,6 +10,7 @@ const defaultChosenTodo = {
   title: '',
   description: '',
   expiryDate: '',
+  files: [],
 };
 
 const ToDoList = () => {

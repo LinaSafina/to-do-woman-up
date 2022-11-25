@@ -51,9 +51,13 @@ export const getData = async () => {
 
     loadedData.push({
       id: key,
+      files: [],
+      description: '',
       ...data[key],
       status: isExpired ? TO_DO_STATUS.EXPIRED : data[key].status,
     });
+
+    console.log(loadedData);
   }
 
   return loadedData;

@@ -1,7 +1,15 @@
 import './to-do-item-card.styles.less';
 
 const ToDoItemCard = ({ data }) => {
-  const { title, description, expiryDate } = data;
+  const { title, description, expiryDate, files } = data;
+
+  console.log(data);
+
+  const fileListContent = files.map(({ id, name }) => (
+    <li key={id} className='to-do-item-card__list-item'>
+      {name}
+    </li>
+  ));
 
   return (
     <div className='to-do-item-card'>
@@ -12,6 +20,17 @@ const ToDoItemCard = ({ data }) => {
           Пожалуйста, сделай до:
         </span>
         <span className='to-do-item-card__date'>{expiryDate}</span>
+      </div>
+      <div className='to-do-item-card__files'>
+        <span className='to-do-item-card__file-text'>Прикрепленные файлы:</span>
+        {files.length > 0 && (
+          <ul className='to-do-item-card__list'>{fileListContent}</ul>
+        )}
+        {files.length === 0 && (
+          <span className='to-do-item-card__notification'>
+            Видимо, для выполнения задачи не нужны файлы
+          </span>
+        )}
       </div>
     </div>
   );

@@ -29,19 +29,29 @@ const NewToDo = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    console.dir(inputFileRef.current);
+    const files = inputFileRef.current.files;
+
+    let filesArr = [];
+
+    for (let key in files) {
+      if (!isNaN(parseInt(key))) {
+        filesArr.push({ id: key, name: files[key].name });
+      }
+    }
 
     const data = await sendItem({
       title,
       description,
       expiryDate,
       status: TO_DO_STATUS.IN_PROGRESS,
-      files: inputFileRef.current.files,
+      files: filesArr,
     });
 
     setTodos(data);
 
     setFormFields(defaultFormFields);
+
+    inputFileRef.current.value = '';
   };
 
   return (
