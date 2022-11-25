@@ -23,11 +23,16 @@ const NewToDo = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    setFormFields((prev) => ({ ...prev, [name]: value }));
+    setFormFields((prev) => ({ ...prev, [name]: value.trim() }));
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+
+    if (!title) {
+      alert('Пожалуйста, введите название задачи');
+      return;
+    }
 
     const files = inputFileRef.current.files;
 

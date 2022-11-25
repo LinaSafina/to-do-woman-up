@@ -57,7 +57,7 @@ const ToDoForm = React.forwardRef((props, ref) => {
         // value={expiryDate}
         // onChange={handleInputChange}
       />
-      <Button text={buttonText} />
+      <Button text={buttonText} disabled={!title} />
     </form>
   );
 });

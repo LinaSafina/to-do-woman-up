@@ -1,9 +1,13 @@
 import './button.styles.less';
 
 const Button = (props) => {
-  const { text } = props;
+  const { text, className = '', disabled } = props;
 
-  return <button className='button'>{text}</button>;
+  const btnClasses = `button ${className ? className : ''} ${
+    disabled ? 'disabled' : ''
+  }`;
+
+  return <button className={btnClasses}>{text}</button>;
 };
 
 export default Button;

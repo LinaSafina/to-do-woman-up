@@ -40,7 +40,7 @@ const Modal = (props) => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    setFormFields((prev) => ({ ...prev, [name]: value }));
+    setFormFields((prev) => ({ ...prev, [name]: value.trim() }));
   };
 
   const handleFormSubmit = async (event) => {
