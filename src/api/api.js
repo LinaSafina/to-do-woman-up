@@ -49,12 +49,18 @@ export const getData = async () => {
       isExpired = await taskStatusCheck(key, data[key].expiryDate);
     }
 
+    let loadedFiles = [];
+
+    for (let key2 in data[key].files) {
+      loadedFiles.push({ id: key, name: data[key].files[key2] }.name);
+    }
+
     loadedData.push({
       id: key,
-      files: [],
       description: '',
       ...data[key],
       status: isExpired ? TO_DO_STATUS.EXPIRED : data[key].status,
+      files: loadedFiles,
     });
 
     console.log(loadedData);

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as DateJS from 'datejs';
 
+import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import TextField from '../text-field/text-field.component';
 import Button from '../button/button.component';
 
 import './to-do-form.styles.less';
 
-const ToDoForm = React.forwardRef((props, ref) => {
+const ToDoForm = (props) => {
   const {
     heading,
     formName,
@@ -14,9 +15,25 @@ const ToDoForm = React.forwardRef((props, ref) => {
     handleFormSubmit,
     handleInputChange,
     buttonText,
+    updatedFiles = [],
+    min,
+    setUpdatedFiles = () => {},
   } = props;
 
   const { title, description, expiryDate } = formFields;
+
+  console.log(updatedFiles);
+
+  const handleFileRemoval = (event) => {
+    const { id } = event.target;
+
+    const modifiedFiles = updatedFiles.filter((file) => {
+      console.log(file.id === id);
+      return file.id !== id;
+    });
+
+    setUpdatedFiles(modifiedFiles);
+  };
 
   return (
     <form className='to-do-form' onSubmit={handleFormSubmit}>
@@ -44,22 +61,32 @@ const ToDoForm = React.forwardRef((props, ref) => {
         label='Обещаю сделать до:'
         value={expiryDate}
         onChange={handleInputChange}
-        min={Date.today().toString('yyyy-M-d')}
+        min={min}
         max={Date.today().add(2).year().toString('yyyy-M-d')}
       />
       <TextField
         type='file'
         id={`${formName}-to-do-file`}
-        name='file'
+        name='files'
         label='Прикрепите очень нужные файлы:'
-        ref={ref}
+        onChange={handleInputChange}
         multiple={true}
-        // value={expiryDate}
-        // onChange={handleInputChange}
       />
-      <Button text={buttonText} disabled={!title} />
+      {updatedFiles.length > 0 && (
+        <ul className='to-do-form__list'>
+          {updatedFiles.map(({ id, name }) => (
+            <li key={id} className='to-do-form__list-item'>
+              {name}
+              <CloseIcon onClick={handleFileRemoval} id={id} />
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className='to-do-form__actions'>
+        <Button text={buttonText} disabled={!title} />
+      </div>
     </form>
   );
-});
+};
 
 export default ToDoForm;

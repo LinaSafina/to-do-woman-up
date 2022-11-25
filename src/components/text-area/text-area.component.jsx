@@ -4,12 +4,7 @@ const TextArea = (props) => {
   const { id, name, ...otherProps } = props;
 
   return (
-    <textarea
-      className='text-field__input'
-      id={id}
-      name={name}
-      {...otherProps}
-    />
+    <textarea className='input textarea' id={id} name={name} {...otherProps} />
   );
 };
 

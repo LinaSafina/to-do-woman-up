@@ -3,7 +3,6 @@ import * as DateJS from 'datejs';
 import { ReactComponent as EditIcon } from '../../assets/edit.svg';
 import { ReactComponent as DeleteIcon } from '../../assets/bin.svg';
 import { ReactComponent as DoneIcon } from '../../assets/done.svg';
-import { ReactComponent as ClipIcon } from '../../assets/clip.svg';
 
 import './to-do-item.styles.less';
 import { deleteItem, editItem, TO_DO_STATUS } from '../../api/api';
@@ -28,7 +27,12 @@ const ToDoItem = (props) => {
   };
 
   const handleItemCompletion = async () => {
-    const data = await editItem(id, { status: TO_DO_STATUS.COMPLETED });
+    const newStatus =
+      status === TO_DO_STATUS.COMPLETED
+        ? 'in progress'
+        : TO_DO_STATUS.COMPLETED;
+
+    const data = await editItem(id, { status: newStatus });
 
     setTodos(data);
   };
@@ -37,8 +41,6 @@ const ToDoItem = (props) => {
     handleModalOpen();
     setIsEdited(true);
   };
-
-  const handleDocsUpload = () => {};
 
   let todoItemClasses = '';
 
@@ -60,7 +62,6 @@ const ToDoItem = (props) => {
       <div className='to-do-item__actions'>
         <DeleteIcon onClick={handleItemDeletion} />
         <DoneIcon onClick={handleItemCompletion} />
-        <ClipIcon onClick={handleDocsUpload} />
         <EditIcon onClick={handleItemEditing} />
       </div>
     </li>

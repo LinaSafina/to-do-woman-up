@@ -21,7 +21,7 @@ const TextField = React.forwardRef((props, ref) => {
   return (
     <div className='text-field'>
       {label && (
-        <label className='text-field__label' htmlFor={id}>
+        <label className='label' htmlFor={id}>
           {label}
         </label>
       )}

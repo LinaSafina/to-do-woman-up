@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
@@ -8,7 +8,6 @@ import { TodosContext } from '../../context/todos.context';
 import './modal.styles.less';
 import { editItem } from '../../api/api';
 import ToDoForm from '../to-do-form/to-do-form.component';
-import { refresh } from 'less';
 
 const defaultFormFields = {
   title: '',
@@ -19,39 +18,63 @@ const defaultFormFields = {
 const Modal = (props) => {
   const { data, isOpen, onClose, isEdited, setIsEdited } = props;
 
+  const [updatedFiles, setUpdatedFiles] = useState([]);
+
   useEffect(() => {
     setFormFields({
       title: data.title,
       description: data.description,
       expiryDate: data.expiryDate,
+      files: [],
     });
+
+    setUpdatedFiles(data.files);
   }, [data]);
+
+  console.log(updatedFiles);
 
   const { setTodos } = useContext(TodosContext);
 
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { title, description, expiryDate } = formFields;
+  const { title, description, expiryDate, files } = formFields;
 
-  const inputFileRef = useRef(null);
-
-  const modalClasses = `modal ${isOpen ? 'shown' : ''}`;
+  const modalClasses = `modal to-do-card ${isOpen ? 'shown' : ''}`;
   const overlayClasses = `overlay ${isOpen ? 'shown' : ''}`;
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
 
-    setFormFields((prev) => ({ ...prev, [name]: value.trim() }));
+    if (type === 'file') {
+      let filesArr = [];
+
+      for (let key in event.target.files) {
+        if (!isNaN(parseInt(key))) {
+          filesArr.push({ id: key, name: event.target.files[key].name });
+        }
+      }
+
+      setFormFields((prev) => ({ ...prev, [name]: filesArr }));
+    } else {
+      setFormFields((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+
+    if (!title) {
+      alert('Пожалуйста, введите название задачи');
+      return;
+    }
+
+    console.log(updatedFiles, files);
 
     const newData = await editItem(data.id, {
       title,
       description,
       expiryDate,
       status: data.status,
-      files: inputFileRef.current.files,
+      files: [...files, ...updatedFiles],
     });
 
     setTodos(newData);
@@ -63,16 +86,18 @@ const Modal = (props) => {
 
   const modalContent = isEdited ? (
     <ToDoForm
-      heading='Только не отодвигайте дедлайн :('
+      heading='Только не отодвигай дедлайн!'
       formFields={formFields}
       handleFormSubmit={handleFormSubmit}
       handleInputChange={handleInputChange}
       formName='edit'
       buttonText='Сохранить'
-      ref={inputFileRef}
+      updatedFiles={updatedFiles}
+      setUpdatedFiles={setUpdatedFiles}
+      min={expiryDate}
     />
   ) : (
-    <ToDoItemCard data={data} />
+    <ToDoItemCard data={data} setIsEdited={setIsEdited} />
   );
   return createPortal(
     <>
@@ -80,28 +105,6 @@ const Modal = (props) => {
       <div className={modalClasses}>
         <CloseIcon onClick={onClose} />
         {modalContent}
-        {/* <form className={formClasses} onSubmit={handleFormSubmit}>
-          <Input
-            // className='modal__title'
-            type='text'
-            value={title}
-            onChange={handleInputChange}
-          />
-          <TextArea
-            // className='modal__description'
-            value={description}
-            onChange={handleInputChange}
-          />
-          <div className='modal__date-container'>
-            <span className='modal__date-text'>Пожалуйста, сделай до:</span>
-            <Input
-              // className='modal__date'
-              type='date'
-              value={date}
-              onChange={handleInputChange}
-            />
-          </div>
-        </form> */}
       </div>
     </>,
     document.body

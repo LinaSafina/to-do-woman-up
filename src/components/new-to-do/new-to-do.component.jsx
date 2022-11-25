@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import * as DateJS from 'datejs';
 
 import './new-to-do.styles.less';
@@ -10,20 +10,34 @@ const defaultFormFields = {
   title: '',
   description: '',
   expiryDate: Date.today().toString('yyyy-M-d'),
+  files: [],
 };
 
 const NewToDo = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { title, description, expiryDate } = formFields;
-
-  const inputFileRef = useRef();
+  const { title, description, expiryDate, files } = formFields;
 
   const { setTodos } = useContext(TodosContext);
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
 
-    setFormFields((prev) => ({ ...prev, [name]: value.trim() }));
+    if (type === 'file') {
+      let filesArr = [];
+
+      for (let key in event.target.files) {
+        if (!isNaN(parseInt(key))) {
+          filesArr.push({
+            id: `${Math.floor(Math.random() * 10000)}`,
+            name: event.target.files[key].name,
+          });
+        }
+      }
+
+      setFormFields((prev) => ({ ...prev, [name]: filesArr }));
+    } else {
+      setFormFields((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFormSubmit = async (event) => {
@@ -34,33 +48,23 @@ const NewToDo = () => {
       return;
     }
 
-    const files = inputFileRef.current.files;
-
-    let filesArr = [];
-
-    for (let key in files) {
-      if (!isNaN(parseInt(key))) {
-        filesArr.push({ id: key, name: files[key].name });
-      }
-    }
-
     const data = await sendItem({
       title,
       description,
       expiryDate,
       status: TO_DO_STATUS.IN_PROGRESS,
-      files: filesArr,
+      files,
     });
 
     setTodos(data);
 
     setFormFields(defaultFormFields);
 
-    inputFileRef.current.value = '';
+    // inputFileRef.current.value = '';
   };
 
   return (
-    <div className='new-to-do'>
+    <div className='to-do-card'>
       <ToDoForm
         heading='Что нужно сделать?'
         formFields={formFields}
@@ -68,38 +72,9 @@ const NewToDo = () => {
         handleFormSubmit={handleFormSubmit}
         formName='new'
         buttonText='Добавить'
-        ref={inputFileRef}
+        // ref={inputFileRef}
+        min={Date.today().toString('yyyy-M-d')}
       />
-      {/* <form className='new-to-do__form' onSubmit={handleFormSubmit}>
-        <h2>Что нужно сделать?</h2>
-        <TextField
-          type='text'
-          id='new-to-do-title'
-          name='title'
-          label='Интересное название:'
-          value={title}
-          onChange={handleInputChange}
-        />
-        <TextField
-          type='textarea'
-          id='new-to-do-description'
-          name='description'
-          label='Подробное описание:'
-          value={description}
-          onChange={handleInputChange}
-        />
-        <TextField
-          type='date'
-          id='new-to-do-date'
-          name='date'
-          label='Обещаю сделать до:'
-          value={date}
-          onChange={handleInputChange}
-          min='2022-11-23'
-          max='2024-12-31'
-        />
-        <Button text='Добавить' />
-      </form> */}
     </div>
   );
 };
