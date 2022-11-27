@@ -1,5 +1,10 @@
 import './button.styles.less';
 
+/**
+ * Component for showing a button
+ * @component
+ * )
+ */
 const Button = (props) => {
   const { text, className = '', disabled } = props;
 

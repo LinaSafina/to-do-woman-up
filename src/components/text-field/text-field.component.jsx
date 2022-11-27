@@ -5,6 +5,11 @@ import TextArea from '../text-area/text-area.component';
 
 import './text-field.styles.less';
 
+/**
+ * Component for showing a block with an input of different types and its label
+ * @component
+ * )
+ */
 const TextField = React.forwardRef((props, ref) => {
   const { type, id, name, label, ...otherProps } = props;
 

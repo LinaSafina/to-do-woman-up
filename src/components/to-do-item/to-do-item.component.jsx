@@ -9,6 +9,11 @@ import './to-do-item.styles.less';
 import { deleteItem, editItem, TO_DO_STATUS } from '../../api/api';
 import { TodosContext } from '../../context/todos.context';
 
+/**
+ * Component for showing one todo item in a list of todos. It defines functions for showing item, its deletion, editing and completion.
+ * @component
+ * )
+ */
 const ToDoItem = (props) => {
   const { text, id, status, handleModalOpen, setIsEdited } = props;
 

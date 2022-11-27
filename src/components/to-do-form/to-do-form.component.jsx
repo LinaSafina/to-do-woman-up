@@ -7,6 +7,11 @@ import Button from '../button/button.component';
 
 import './to-do-form.styles.less';
 
+/**
+ * Component for showing a form for creating a new todo or updating it. It contains a title, description, date, file input and optional list of files (for update form)
+ * @component
+ * )
+ */
 const ToDoForm = (props) => {
   const {
     heading,
@@ -39,7 +44,7 @@ const ToDoForm = (props) => {
         type='text'
         id={`${formName}-to-do-title`}
         name='title'
-        label='Интересное название:'
+        label='* Интересное название:'
         value={title}
         onChange={handleInputChange}
       />
@@ -55,7 +60,7 @@ const ToDoForm = (props) => {
         type='date'
         id={`${formName}-to-do-date`}
         name='expiryDate'
-        label='Обещаю сделать до:'
+        label='* Обещаю сделать до:'
         value={expiryDate}
         onChange={handleInputChange}
         min={min}

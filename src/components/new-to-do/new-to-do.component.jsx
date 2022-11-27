@@ -14,6 +14,10 @@ const defaultFormFields = {
   files: [],
 };
 
+/**
+ * Component that contains functionality for the form that creates a new todo
+ * @component
+ */
 const NewToDo = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { title, description, expiryDate, files } = formFields;

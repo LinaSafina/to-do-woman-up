@@ -3,6 +3,11 @@ import { ReactComponent as EditIcon } from '../../assets/edit.svg';
 import { TO_DO_STATUS } from '../../api/api';
 import './to-do-item-card.styles.less';
 
+/**
+ * Component for showing a full information about one todo item (its title, description, attached files and expiry date)
+ * @component
+ * )
+ */
 const ToDoItemCard = ({ data, setIsEdited }) => {
   const { title, description, expiryDate, files, status } = data;
 

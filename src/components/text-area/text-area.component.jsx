@@ -1,5 +1,10 @@
 import './text-area.styles.less';
 
+/**
+ * Component for showing a textarea
+ * @component
+ * )
+ */
 const TextArea = (props) => {
   const { id, name, ...otherProps } = props;
 

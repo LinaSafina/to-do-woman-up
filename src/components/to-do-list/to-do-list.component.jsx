@@ -13,6 +13,11 @@ const defaultChosenTodo = {
   files: [],
 };
 
+/**
+ * Component for showing a list of todos. It defines functions for modal opening and closing.
+ * @component
+ * )
+ */
 const ToDoList = () => {
   const [chosenToDo, setChosenToDo] = useState(defaultChosenTodo);
   const [isModalOpen, setIsModalOpen] = useState(false);
