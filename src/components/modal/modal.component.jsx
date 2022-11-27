@@ -3,11 +3,11 @@ import { createPortal } from 'react-dom';
 
 import { ReactComponent as CloseIcon } from '../../assets/close.svg';
 import ToDoItemCard from '../to-do-item-card/to-do-item-card.component';
+import ToDoForm from '../to-do-form/to-do-form.component';
 
 import { TodosContext } from '../../context/todos.context';
 import './modal.styles.less';
-import { editItem } from '../../api/api';
-import ToDoForm from '../to-do-form/to-do-form.component';
+import { editItem, TO_DO_STATUS } from '../../api/api';
 
 const defaultFormFields = {
   title: '',
@@ -30,8 +30,6 @@ const Modal = (props) => {
 
     setUpdatedFiles(data.files);
   }, [data]);
-
-  console.log(updatedFiles);
 
   const { setTodos } = useContext(TodosContext);
 
@@ -64,16 +62,18 @@ const Modal = (props) => {
 
     if (!title) {
       alert('Пожалуйста, введите название задачи');
+
       return;
     }
-
-    console.log(updatedFiles, files);
 
     const newData = await editItem(data.id, {
       title,
       description,
       expiryDate,
-      status: data.status,
+      status:
+        data.status === TO_DO_STATUS.COMPLETED
+          ? TO_DO_STATUS.COMPLETED
+          : TO_DO_STATUS.IN_PROGRESS,
       files: [...files, ...updatedFiles],
     });
 
@@ -99,6 +99,7 @@ const Modal = (props) => {
   ) : (
     <ToDoItemCard data={data} setIsEdited={setIsEdited} />
   );
+
   return createPortal(
     <>
       <div className={overlayClasses} onClick={onClose}></div>

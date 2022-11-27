@@ -62,28 +62,10 @@ export const getData = async () => {
       status: isExpired ? TO_DO_STATUS.EXPIRED : data[key].status,
       files: loadedFiles,
     });
-
-    console.log(loadedData);
   }
 
   return loadedData;
 };
-
-// export const getUpdatedData = async () => {
-//   const data = await sendHttpRequest();
-
-//   const loadedData = [];
-
-//   for (let key in data) {
-//     loadedData.push({
-//       id: key,
-//       ...data[key],
-//     });
-
-//   }
-
-//   return loadedData;
-// };
 
 export const editItem = async (id, body) => {
   const data = await sendHttpRequest(

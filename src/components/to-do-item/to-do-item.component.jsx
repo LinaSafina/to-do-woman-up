@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import * as DateJS from 'datejs';
 
 import { ReactComponent as EditIcon } from '../../assets/edit.svg';
@@ -6,7 +7,6 @@ import { ReactComponent as DoneIcon } from '../../assets/done.svg';
 
 import './to-do-item.styles.less';
 import { deleteItem, editItem, TO_DO_STATUS } from '../../api/api';
-import { useContext } from 'react';
 import { TodosContext } from '../../context/todos.context';
 
 const ToDoItem = (props) => {
@@ -39,6 +39,7 @@ const ToDoItem = (props) => {
 
   const handleItemEditing = () => {
     handleModalOpen();
+
     setIsEdited(true);
   };
 

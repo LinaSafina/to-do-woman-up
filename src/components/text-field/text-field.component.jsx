@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Input from '../input/input.component';
 import TextArea from '../text-area/text-area.component';
 
@@ -18,6 +19,7 @@ const TextField = React.forwardRef((props, ref) => {
       <Input type={type} id={id} name={name} {...otherProps} ref={ref} />
     );
   }
+
   return (
     <div className='text-field'>
       {label && (
@@ -26,17 +28,6 @@ const TextField = React.forwardRef((props, ref) => {
         </label>
       )}
       {content}
-      {/* {type === 'textarea' ? (
-        <TextArea id={id} name={name} {...otherProps} />
-      ) : (
-        <Input
-          type={type}
-          id={id}
-          name={name}
-          {...otherProps}
-          ref={ref || ''}
-        />
-      )} */}
     </div>
   );
 });

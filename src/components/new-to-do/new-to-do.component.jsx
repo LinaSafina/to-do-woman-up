@@ -1,10 +1,11 @@
 import { useContext, useState } from 'react';
 import * as DateJS from 'datejs';
 
+import ToDoForm from '../to-do-form/to-do-form.component';
+
 import './new-to-do.styles.less';
 import { sendItem, TO_DO_STATUS } from '../../api/api';
 import { TodosContext } from '../../context/todos.context';
-import ToDoForm from '../to-do-form/to-do-form.component';
 
 const defaultFormFields = {
   title: '',
@@ -59,8 +60,6 @@ const NewToDo = () => {
     setTodos(data);
 
     setFormFields(defaultFormFields);
-
-    // inputFileRef.current.value = '';
   };
 
   return (
@@ -72,7 +71,6 @@ const NewToDo = () => {
         handleFormSubmit={handleFormSubmit}
         formName='new'
         buttonText='Добавить'
-        // ref={inputFileRef}
         min={Date.today().toString('yyyy-M-d')}
       />
     </div>

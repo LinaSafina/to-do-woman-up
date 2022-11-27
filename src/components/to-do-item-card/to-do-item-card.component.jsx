@@ -1,6 +1,6 @@
-import { TO_DO_STATUS } from '../../api/api';
 import { ReactComponent as EditIcon } from '../../assets/edit.svg';
 
+import { TO_DO_STATUS } from '../../api/api';
 import './to-do-item-card.styles.less';
 
 const ToDoItemCard = ({ data, setIsEdited }) => {
@@ -9,8 +9,6 @@ const ToDoItemCard = ({ data, setIsEdited }) => {
   const handleItemEditing = () => {
     setIsEdited(true);
   };
-
-  console.log(files);
 
   const fileListContent = files.map((file) => (
     <li key={file.id} className='to-do-item-card__list-item'>

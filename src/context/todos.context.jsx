@@ -1,5 +1,4 @@
 import { createContext, useState } from 'react';
-import { TO_DO_STATUS } from '../api/api';
 
 const initialValue = {
   todos: [],

@@ -22,13 +22,10 @@ const ToDoForm = (props) => {
 
   const { title, description, expiryDate } = formFields;
 
-  console.log(updatedFiles);
-
   const handleFileRemoval = (event) => {
     const { id } = event.target;
 
     const modifiedFiles = updatedFiles.filter((file) => {
-      console.log(file.id === id);
       return file.id !== id;
     });
 
